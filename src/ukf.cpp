@@ -158,7 +158,7 @@ void UKF::Prediction(double delta_t)
   Complete this function! Estimate the object's location. Modify the state
   vector, x_. Predict sigma points, the state, and the state covariance matrix.
   */
-  cout << "Prediction called " << endl;
+  // cout << "Prediction called " << endl;
 
   Tools tools;
 
@@ -194,7 +194,7 @@ void UKF::Prediction(double delta_t)
     Xsig_aug.col(i+1)       = x_aug + sqrt(lambda_ + n_aug_) * L.col(i);
     Xsig_aug.col(i+1+n_aug_) = x_aug - sqrt(lambda_ + n_aug_) * L.col(i);
   }
-  cout << "Prediction - Augmented sigma points are:  " << Xsig_aug << endl;
+  // cout << "Prediction - Augmented sigma points are:  " << Xsig_aug << endl;
 
   // Step 2: Predict Sigma Points
 
@@ -244,7 +244,7 @@ void UKF::Prediction(double delta_t)
     Xsig_pred_(3,i) = yaw_p;
     Xsig_pred_(4,i) = yawd_p;
   }
-  cout << "Prediction - Predicted sigma points are:  " << Xsig_pred_ << endl;
+  // cout << "Prediction - Predicted sigma points are:  " << Xsig_pred_ << endl;
 
 
 
@@ -278,28 +278,15 @@ void UKF::Prediction(double delta_t)
     // state difference
     VectorXd x_diff = Xsig_pred_.col(i) - x_pred_;
     //angle normalization
-    cout << "Prediction - starting angle normalization for x_diff(3)" << x_diff(3) << endl;
-    /*
-    if (x_diff(3) > (6. * M_PI) ) x_diff(3) = fmod(x_diff(3), (2.0 * M_PI) );
-    while (x_diff(3)> M_PI) x_diff(3)-=2.*M_PI;
-    
-    
-    if (x_diff(3) < (6. * -M_PI) ) {
-      cout << "Prediction - Computnig division_result for " << x_diff(3) << endl;
-      double division_result = x_diff(3)/(2.0 * M_PI);
-      cout << "Prediction - division result is " << division_result << endl;
-      x_diff(3) = x_diff(3) + (division_result * 2.0 * M_PI);
-      cout << "Prediction - final x_diff(3) " << x_diff(3) << endl;
-    }
-    while (x_diff(3)<-M_PI) x_diff(3)+=2.*M_PI;
-    */
+    // cout << "Prediction - starting angle normalization for x_diff(3)" << x_diff(3) << endl;
+
    /*while (x_diff(3)> M_PI || x_diff(3)<-M_PI) {
      x_diff(3) = atan(x_diff(3));
     }
     */
    x_diff(3) = tools.normalize_angle(x_diff(3));
 
-    cout << "Prediction - finished angle normalization for x_diff(3)" << x_diff(3) << endl;
+    // cout << "Prediction - finished angle normalization for x_diff(3)" << x_diff(3) << endl;
 
     P_pred_ = P_pred_ + weights_(i) * x_diff * x_diff.transpose() ;
   }
@@ -307,8 +294,8 @@ void UKF::Prediction(double delta_t)
   x_ = x_pred_;
   P_ = P_pred_;
 
-cout << "Prediction - Predicted mean :  " << x_ << endl;
-cout << "Prediction - Predicted state covariance matrix :  " << P_ << endl;
+// cout << "Prediction - Predicted mean :  " << x_ << endl;
+// cout << "Prediction - Predicted state covariance matrix :  " << P_ << endl;
 
 }
 
@@ -326,7 +313,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package)
 
   You'll also need to calculate the lidar NIS.
   */
- cout << "UpdateLidar called " << endl;
+ // cout << "UpdateLidar called " << endl;
 
 
   // Step 1: Predict Radar Measurement
@@ -407,7 +394,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package)
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S*K.transpose();
 
-  cout << "UpdateLidar completed " << endl;
+  // cout << "UpdateLidar completed " << endl;
 
 }
 
@@ -425,7 +412,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
 
   You'll also need to calculate the radar NIS.
   */
- cout << "UpdateRadar called " << endl;
+ // cout << "UpdateRadar called " << endl;
 
  Tools tools;
 
@@ -533,7 +520,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package)
   x_ = x_ + K * z_diff;
   P_ = P_ - K*S*K.transpose();
 
-  cout << "UpdateRadar completed " << endl;
+  // cout << "UpdateRadar completed " << endl;
 
 }
 
